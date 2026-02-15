@@ -9,7 +9,7 @@ randomColorsCheckbox.addEventListener('change', (e) => {
 
 newGridButton.addEventListener('click', () => {
   const newSize = prompt('Enter new grid size (e.g., 16 for 16x16):');
-  if (newSize && !Number.isNaN(newSize) && newSize > 0) {
+  if (newSize && !Number.isNaN(newSize) && newSize > 0 && newSize <= 100) {
     gridSize = Number.parseInt(newSize);
     createGrid(gridSize);
   } else {
@@ -76,6 +76,7 @@ window.addEventListener('resize', resizeContainer);
 
 function createGrid(size) {
   container.innerHTML = ''; // Clear existing grid
+  const fragment = document.createDocumentFragment();
   const cellSize = 100 / size;
 
   for (let i = 1; i <= size * size; i++) {
@@ -88,8 +89,10 @@ function createGrid(size) {
     cell.style.backgroundColor = `rgb(${initialColor.r}, ${initialColor.g}, ${initialColor.b})`;
     cell.addEventListener('pointerenter', handleHover);
     cell.addEventListener('touchmove', handleHover, { passive: false });
-    container.appendChild(cell);
+
+    fragment.appendChild(cell);
   }
+  container.appendChild(fragment);
 }
 
 createGrid(gridSize);
