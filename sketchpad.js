@@ -37,6 +37,7 @@ function handleHover(e) {
   const isTouchEvent = e.type === 'touchmove';
   const target = isTouchEvent ? document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY) : e.target;
   const targetName = target.getAttribute('name');
+  target.classList.remove('no-print');
 
   if (!target?.classList.contains('cell') || previousTargetName === targetName) return;
 
@@ -82,7 +83,7 @@ function createGrid(size) {
   for (let i = 1; i <= size * size; i++) {
     const cell = document.createElement('div');
 
-    cell.classList.add('cell');
+    cell.classList.add('cell', 'no-print');
     cell.style.height = `${cellSize}%`;
     cell.style.width = `${cellSize}%`;
     cell.setAttribute('name', i);

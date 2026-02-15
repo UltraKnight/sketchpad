@@ -8,10 +8,13 @@
   </head>
   <body>
     <div class="container"></div>
-    <div class="actions">
+    <div class="actions no-print">
       <button id="change-grid-size">New Grid</button>
-      <input type="checkbox" id="random-colors" />
-      <label for="random-colors">Random Colors</label>
+      <fieldset>
+        <input type="checkbox" id="random-colors" />
+        <label for="random-colors">Random Colors</label>
+      </fieldset>
+      <button id="print-button" onclick="window.print()">Print Sketch</button>
     </div>
     <script src="sketchpad.js"></script>
   </body>

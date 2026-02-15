@@ -17,10 +17,21 @@ body {
 }
 
 button {
+  border: 1px solid #ffffff;
   padding: 10px 20px;
-  border: none;
   border-radius: 5px;
   background-color: #acacac;
+  transition: background-color 0.3s, border 0.3s;
+
+  &:hover {
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    cursor: pointer;
+  }
+}
+
+fieldset {
+  border: none;
 }
 
 #random-colors {
@@ -46,4 +57,37 @@ button {
 
 .actions {
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 10px auto;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  header{
+      display: none;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .cell {
+    border: none;
+  }
+
+  .no-print {
+    visibility: hidden;
+  }
+
+  .container {
+    outline: none;
+  }
 }
