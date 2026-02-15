@@ -3,6 +3,18 @@ const newGridButton = document.getElementById('change-grid-size');
 const randomColorsCheckbox = document.getElementById('random-colors');
 
 let isRandomColor = randomColorsCheckbox.checked;
+// cancel the hover effect when the mouse button is pressed
+let isMouseDown = false;
+
+document.addEventListener('mousedown', function (e) {
+  e.preventDefault();
+  isMouseDown = true;
+});
+
+document.addEventListener('mouseup', function (e) {
+  e.preventDefault();
+  isMouseDown = false;
+});
 
 randomColorsCheckbox.addEventListener('change', (e) => {
   isRandomColor = e.target.checked;
@@ -35,6 +47,8 @@ let previousTargetName = null;
 
 function handleHover(e) {
   e.preventDefault();
+  if (isMouseDown) return;
+
   const isTouchEvent = e.type === 'touchmove';
   const target = isTouchEvent ? document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY) : e.target;
   const targetName = target.getAttribute('name');
