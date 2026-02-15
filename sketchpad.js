@@ -38,7 +38,7 @@ function handleHover(e) {
   const target = isTouchEvent ? document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY) : e.target;
   const targetName = target.getAttribute('name');
 
-  if (!target?.classList.contains('cell') || targetName === previousTargetName) return;
+  if (!target?.classList.contains('cell') || previousTargetName === targetName) return;
 
   previousTargetName = targetName;
 
@@ -87,12 +87,16 @@ function createGrid(size) {
     cell.style.width = `${cellSize}%`;
     cell.setAttribute('name', i);
     cell.style.backgroundColor = `rgb(${initialColor.r}, ${initialColor.g}, ${initialColor.b})`;
-    cell.addEventListener('pointerenter', handleHover);
-    cell.addEventListener('touchmove', handleHover, { passive: false });
 
     fragment.appendChild(cell);
   }
   container.appendChild(fragment);
+
+  container.removeEventListener('pointerover', handleHover);
+  container.removeEventListener('touchmove', handleHover);
+
+  container.addEventListener('pointerover', handleHover);
+  container.addEventListener('touchmove', handleHover, { passive: false });
 }
 
 createGrid(gridSize);
