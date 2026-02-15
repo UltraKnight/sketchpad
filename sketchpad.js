@@ -28,12 +28,19 @@ function getRandomColor() {
   return { r, g, b };
 }
 
+// keep the state of the last hovered element in touch devices
+// avoid increasing the alpha property quickly when moving the finger on the same cell
+let previousTargetName = null;
+
 function handleHover(e) {
   e.preventDefault();
   const isTouchEvent = e.type === 'touchmove';
   const target = isTouchEvent ? document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY) : e.target;
+  const targetName = target.getAttribute('name');
 
-  if (!target?.classList.contains('cell')) return;
+  if (!target?.classList.contains('cell') || targetName === previousTargetName) return;
+
+  previousTargetName = targetName;
 
   if (!target.dataset.alpha) target.dataset.alpha = opacityAddition;
 
@@ -77,6 +84,7 @@ function createGrid(size) {
     cell.classList.add('cell');
     cell.style.height = `${cellSize}%`;
     cell.style.width = `${cellSize}%`;
+    cell.setAttribute('name', i);
     cell.style.backgroundColor = `rgb(${initialColor.r}, ${initialColor.g}, ${initialColor.b})`;
     cell.addEventListener('pointerenter', handleHover);
     cell.addEventListener('touchmove', handleHover, { passive: false });
