@@ -3,7 +3,6 @@ const newGridButton = document.getElementById('change-grid-size');
 const randomColorsCheckbox = document.getElementById('random-colors');
 
 let isRandomColor = false;
-
 randomColorsCheckbox.addEventListener('change', (e) => {
   isRandomColor = e.target.checked;
 });
@@ -19,50 +18,62 @@ newGridButton.addEventListener('click', () => {
 });
 
 let gridSize = 16;
+const initialColor = { r: 255, g: 255, b: 255 }; // Default to white
+const opacityAddition = 10 / 100; // 10% opacity increase on each hover
 
 function getRandomColor() {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
   const b = Math.floor(Math.random() * 256);
-  return `rgb(${r}, ${g}, ${b})`;
+  return { r, g, b };
 }
+
+function handleHover(e) {
+  e.preventDefault();
+  const isTouchEvent = e.type === 'touchmove';
+  const target = isTouchEvent ? document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY) : e.target;
+
+  if (!target?.classList.contains('cell')) return;
+
+  const currentCellColor = target.style.backgroundColor;
+  const [r, g, b, a = 0] = currentCellColor.match(/[\d.]+/g).map(Number);
+  const { r: initialR, g: initialG, b: initialB } = initialColor;
+
+  // set the new color if hovered for the first time
+  if (r === initialR && g === initialG && b === initialB) {
+    const newColor = isRandomColor ? getRandomColor() : { r: 0, g: 0, b: 0 }; // Default to black if not random
+    target.style.backgroundColor = `rgba(${newColor.r}, ${newColor.g}, ${newColor.b}, 0.1)`;
+    return;
+  }
+
+  const newAlpha = Math.min(a + opacityAddition, 1);
+  target.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${newAlpha})`;
+}
+
+function resizeContainer() {
+  const clientWidth = window.innerWidth;
+  const clientHeight = window.innerHeight;
+  const size = Math.min(clientWidth, clientHeight);
+
+  container.style.width = `${size}px`;
+  container.style.height = `${size}px`;
+}
+
+resizeContainer();
+window.addEventListener('resize', resizeContainer);
 
 function createGrid(size) {
   container.innerHTML = ''; // Clear existing grid
   for (let i = 1; i <= size * size; i++) {
-    const numberOfGaps = size - 1;
-    const gapSize = 1;
-    const secureOffset = 100; // Account for body margin and other elements
     const cell = document.createElement('div');
-    const opacityAddition = 10 / 100; // 10% opacity increase on each hover
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const minorViewportDimension = Math.min(viewportWidth, viewportHeight) - secureOffset;
-    container.style.width = `${minorViewportDimension}px`;
-    container.style.height = `${minorViewportDimension}px`;
-
-    container.style.gap = `${gapSize}px`;
 
     cell.classList.add('cell');
-    cell.style.width = `${(minorViewportDimension - numberOfGaps * gapSize) / size}px`;
-    cell.style.height = `${(minorViewportDimension - numberOfGaps * gapSize) / size}px`;
-    cell.style.opacity = opacityAddition;
+    cell.style.height = `${100 / size}%`;
+    cell.style.width = `${100 / size}%`;
+    cell.style.backgroundColor = `rgb(${initialColor.r}, ${initialColor.g}, ${initialColor.b})`;
 
-    cell.addEventListener('mouseenter', (e) => {
-      // need parseFloat because it is a string
-      e.target.style.opacity = Math.min(Number.parseFloat(e.target.style.opacity) + opacityAddition, 1);
-      e.target.style.backgroundColor = isRandomColor ? getRandomColor() : 'black';
-    });
-
-    cell.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      const target = document.elementFromPoint(touch.clientX, touch.clientY);
-      if (target?.classList.contains('cell')) {
-        target.style.opacity = Math.min(Number.parseFloat(target.style.opacity) + opacityAddition, 1);
-        target.style.backgroundColor = isRandomColor ? getRandomColor() : 'black';
-      }
-    });
+    cell.addEventListener('mouseenter', handleHover);
+    cell.addEventListener('touchmove', handleHover);
 
     container.appendChild(cell);
   }
