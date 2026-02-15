@@ -2,13 +2,14 @@ const container = document.querySelector('.container');
 const newGridButton = document.getElementById('change-grid-size');
 const randomColorsCheckbox = document.getElementById('random-colors');
 
-let isRandomColor = false;
+let isRandomColor = randomColorsCheckbox.checked;
+
 randomColorsCheckbox.addEventListener('change', (e) => {
   isRandomColor = e.target.checked;
 });
 
 newGridButton.addEventListener('click', () => {
-  const newSize = prompt('Enter new grid size (e.g., 16 for 16x16):');
+  const newSize = prompt('Enter new grid size (e.g., 16 for 16x16), max 100:', '16');
   if (newSize && !Number.isNaN(newSize) && newSize > 0 && newSize <= 100) {
     gridSize = Number.parseInt(newSize);
     createGrid(gridSize);
@@ -75,7 +76,7 @@ function resizeContainer() {
 resizeContainer();
 window.addEventListener('resize', resizeContainer);
 
-function createGrid(size) {
+function createGrid(size = gridSize) {
   container.innerHTML = ''; // Clear existing grid
   const fragment = document.createDocumentFragment();
   const cellSize = 100 / size;

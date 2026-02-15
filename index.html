@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
     <title>Sketchpad</title>
   </head>
@@ -11,10 +12,11 @@
     <div class="actions no-print">
       <button id="change-grid-size">New Grid</button>
       <fieldset>
-        <input type="checkbox" id="random-colors" />
+        <input type="checkbox" id="random-colors" name="random-colors" value="random-colors" />
         <label for="random-colors">Random Colors</label>
       </fieldset>
       <button id="print-button" onclick="window.print()">Print Sketch</button>
+      <button id="clear-button" onclick="createGrid()">Clear Grid</button>
     </div>
     <script src="sketchpad.js"></script>
   </body>
