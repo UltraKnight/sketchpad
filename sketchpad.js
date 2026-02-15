@@ -35,6 +35,12 @@ function handleHover(e) {
 
   if (!target?.classList.contains('cell')) return;
 
+  if (!target.dataset.alpha) target.dataset.alpha = opacityAddition;
+
+  let alpha = parseFloat(target.dataset.alpha);
+  alpha = Math.min(alpha + opacityAddition, 1);
+  target.dataset.alpha = alpha;
+
   const currentCellColor = target.style.backgroundColor;
   const [r, g, b, a = 0] = currentCellColor.match(/[\d.]+/g).map(Number);
   const { r: initialR, g: initialG, b: initialB } = initialColor;
@@ -46,8 +52,7 @@ function handleHover(e) {
     return;
   }
 
-  const newAlpha = Math.min(a + opacityAddition, 1);
-  target.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${newAlpha})`;
+  target.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 function resizeContainer() {
@@ -64,17 +69,17 @@ window.addEventListener('resize', resizeContainer);
 
 function createGrid(size) {
   container.innerHTML = ''; // Clear existing grid
+  const cellSize = 100 / size;
+
   for (let i = 1; i <= size * size; i++) {
     const cell = document.createElement('div');
 
     cell.classList.add('cell');
-    cell.style.height = `${100 / size}%`;
-    cell.style.width = `${100 / size}%`;
+    cell.style.height = `${cellSize}%`;
+    cell.style.width = `${cellSize}%`;
     cell.style.backgroundColor = `rgb(${initialColor.r}, ${initialColor.g}, ${initialColor.b})`;
-
-    cell.addEventListener('mouseenter', handleHover);
-    cell.addEventListener('touchmove', handleHover);
-
+    cell.addEventListener('pointerenter', handleHover);
+    cell.addEventListener('touchmove', handleHover, { passive: false });
     container.appendChild(cell);
   }
 }
