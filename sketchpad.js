@@ -78,18 +78,6 @@ function handleHover(e) {
   target.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-function resizeContainer() {
-  const clientWidth = window.innerWidth;
-  const clientHeight = window.innerHeight;
-  const size = Math.min(clientWidth, clientHeight);
-
-  container.style.width = `${size}px`;
-  container.style.height = `${size}px`;
-}
-
-resizeContainer();
-window.addEventListener('resize', resizeContainer);
-
 function createGrid(size = gridSize) {
   container.innerHTML = ''; // Clear existing grid
   const fragment = document.createDocumentFragment();

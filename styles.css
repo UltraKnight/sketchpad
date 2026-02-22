@@ -1,3 +1,9 @@
+:root {
+  --primary-blue: #006dd3;
+  --secondary-blue: #00396f;
+  --primary-grey: grey;
+}
+
 *,
 *::before,
 *::after {
@@ -6,6 +12,7 @@
 
 html {
   font-size: 16px;
+  color: var(--secondary-blue);
 }
 
 body {
@@ -17,15 +24,16 @@ body {
 }
 
 button {
-  border: 1px solid #ffffff;
+  color: white;
+  border: 1px solid var(--secondary-blue);
   padding: 10px 20px;
   border-radius: 5px;
-  background-color: #acacac;
+  background-color: var(--primary-blue);
   transition: background-color 0.3s, border 0.3s;
 
   &:hover {
-    border: 1px solid #000000;
-    background-color: #ffffff;
+    border: 1px solid var(--primary-blue);
+    background-color: var(--secondary-blue);
     cursor: pointer;
   }
 }
@@ -43,16 +51,18 @@ fieldset {
 }
 
 .container {
-  outline: 1px solid grey;
+  outline: 2px solid var(--primary-blue);
   position: relative;
   display: flex;
   flex-wrap: wrap;
   margin: 10px auto;
+  height: 80vmin;
+  width: 80vmin;
   max-width: 960px;
 }
 
 .cell {
-  border: 1px solid grey;
+  border: 1px solid var(--primary-blue);
 }
 
 .actions {
